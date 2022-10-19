@@ -42,4 +42,4 @@ impl<T> BasicArray<T> for Vec<T> {
 /// let third_item = queue.get().unwrap();
 /// assert_eq!(third_item, 1);
 /// ```
-pub type LifoQueue<T> = BasicQueue<Vec<T>, T>;
+pub type LifoQueue<T> = BaseQueue<Vec<T>, T>;

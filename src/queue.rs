@@ -136,11 +136,11 @@ impl<Q: BasicArray<T>, T> QueueInner<Q, T> {
     }
 }
 
-pub struct BasicQueue<Q, T> {
+pub struct BaseQueue<Q, T> {
     pub(crate) inner: Arc<QueueInner<Q, T>>,
 }
 
-impl<Q: BasicArray<T>, T> BasicQueue<Q, T> {
+impl<Q: BasicArray<T>, T> BaseQueue<Q, T> {
     pub fn new(maxsize: Option<usize>) -> Self {
         Self {
             inner: Arc::new(QueueInner::new(maxsize)),
@@ -148,7 +148,7 @@ impl<Q: BasicArray<T>, T> BasicQueue<Q, T> {
     }
 }
 
-impl<Q: BasicArray<T>, T> Queue<T> for BasicQueue<Q, T> {
+impl<Q: BasicArray<T>, T> Queue<T> for BaseQueue<Q, T> {
     fn len(&self) -> usize {
         self.inner.queue.lock().unwrap().len()
     }
@@ -243,7 +243,7 @@ impl<Q: BasicArray<T>, T> Queue<T> for BasicQueue<Q, T> {
     }
 }
 
-impl<Q, T> Clone for BasicQueue<Q, T> {
+impl<Q, T> Clone for BaseQueue<Q, T> {
     fn clone(&self) -> Self {
         Self {
             inner: Arc::clone(&self.inner),

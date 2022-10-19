@@ -71,4 +71,4 @@ impl<T, P: Ord> BasicArray<PrioritizedItem<T, P>> for BinaryHeap<PrioritizedItem
 /// assert_eq!(third_item.0, 2);
 /// assert_eq!(third_item.1, 8);
 /// ```
-pub type PriorityQueue<T, P> = BasicQueue<BinaryHeap<PrioritizedItem<T, P>>, PrioritizedItem<T, P>>;
+pub type PriorityQueue<T, P> = BaseQueue<BinaryHeap<PrioritizedItem<T, P>>, PrioritizedItem<T, P>>;

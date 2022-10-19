@@ -44,4 +44,4 @@ impl<T> BasicArray<T> for VecDeque<T> {
 /// let third_item = queue.get().unwrap();
 /// assert_eq!(third_item, 3);
 /// ```
-pub type FifoQueue<T> = BasicQueue<VecDeque<T>, T>;
+pub type FifoQueue<T> = BaseQueue<VecDeque<T>, T>;
