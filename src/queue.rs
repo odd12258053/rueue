@@ -8,15 +8,102 @@ pub enum QueueError {
     Empty,
 }
 
+#[derive(Debug)]
 pub struct PutError<T>(T, QueueError);
 
 pub trait Queue<T> {
+    ///
+    /// # Example
+    /// ```
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(None);
+    /// queue.put(1).unwrap();
+    ///
+    /// assert_eq!(queue.len(), 1);
+    /// ```
     fn len(&self) -> usize;
+
+    ///
+    /// # Example
+    /// ```
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(None);
+    ///
+    /// assert_eq!(queue.is_empty(), true);
+    ///
+    /// queue.put(1).unwrap();
+    /// assert_eq!(queue.is_empty(), false);
+    /// ```
     fn is_empty(&self) -> bool;
+
+    ///
+    /// # Example
+    /// ```
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(Some(1));
+    ///
+    /// assert_eq!(queue.is_full(), false);
+    ///
+    /// queue.put(1).unwrap();
+    /// assert_eq!(queue.is_full(), true);
+    /// ```
     fn is_full(&self) -> bool;
+
+    ///
+    /// # Example
+    /// ```
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(None);
+    ///
+    /// queue.put(1).unwrap();
+    /// let item = queue.get().unwrap();
+    /// assert_eq!(item, 1);
+    /// ```
     fn get(&mut self) -> Result<T, QueueError>;
+
+    ///
+    /// # Example
+    /// ```
+    /// use std::time;
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(None);
+    ///
+    /// queue.put(1).unwrap();
+    /// let item = queue.get_wait(time::Duration::from_millis(1000)).unwrap();
+    /// assert_eq!(item, 1);
+    /// ```
     fn get_wait(&mut self, timeout: time::Duration) -> Result<T, QueueError>;
+
+    ///
+    /// # Example
+    /// ```
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(None);
+    ///
+    /// queue.put(1).unwrap();
+    /// let item = queue.get().unwrap();
+    /// assert_eq!(item, 1);
+    /// ```
     fn put(&mut self, value: T) -> Result<(), PutError<T>>;
+
+    ///
+    /// # Example
+    /// ```
+    /// use std::time;
+    /// use rueue::{FifoQueue, Queue};
+    ///
+    /// let mut queue = FifoQueue::new(None);
+    ///
+    /// queue.put_wait(1, time::Duration::from_millis(1000)).unwrap();
+    /// let item = queue.get().unwrap();
+    /// assert_eq!(item, 1);
+    /// ```
     fn put_wait(&mut self, value: T, timeout: time::Duration) -> Result<(), PutError<T>>;
 }
 

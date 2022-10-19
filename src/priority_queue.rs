@@ -4,34 +4,25 @@ use std::collections::BinaryHeap;
 use crate::queue::*;
 
 #[derive(Debug)]
-pub struct PrioritizedItem<T, P> {
-    pub item: T,
-    pub priority: P,
-}
-
-impl<T, P> PrioritizedItem<T, P> {
-    pub fn new(item: T, priority: P) -> Self {
-        Self { item, priority }
-    }
-}
+pub struct PrioritizedItem<T, P>(pub T, pub P);
 
 impl<T, P: Ord> Eq for PrioritizedItem<T, P> {}
 
 impl<T, P: Ord> PartialEq<Self> for PrioritizedItem<T, P> {
     fn eq(&self, other: &Self) -> bool {
-        self.priority.eq(&other.priority)
+        self.1.eq(&other.1)
     }
 }
 
 impl<T, P: Ord> PartialOrd<Self> for PrioritizedItem<T, P> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.priority.partial_cmp(&other.priority)
+        self.1.partial_cmp(&other.1)
     }
 }
 
 impl<T, P: Ord> Ord for PrioritizedItem<T, P> {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.priority.cmp(&other.priority)
+        self.1.cmp(&other.1)
     }
 }
 
@@ -56,4 +47,28 @@ impl<T, P: Ord> BasicArray<PrioritizedItem<T, P>> for BinaryHeap<PrioritizedItem
     }
 }
 
+/// Queue with a priority.
+///
+/// # Example
+/// ```
+/// use rueue::{PriorityQueue, PrioritizedItem, Queue};
+///
+/// let mut queue = PriorityQueue::new(None);
+///
+/// queue.put(PrioritizedItem(1, 10)).unwrap();
+/// queue.put(PrioritizedItem(2, 8)).unwrap();
+/// queue.put(PrioritizedItem(3, 9)).unwrap();
+///
+/// let first_item = queue.get().unwrap();
+/// assert_eq!(first_item.0, 1);
+/// assert_eq!(first_item.1, 10);
+///
+/// let second_item = queue.get().unwrap();
+/// assert_eq!(second_item.0, 3);
+/// assert_eq!(second_item.1, 9);
+///
+/// let third_item = queue.get().unwrap();
+/// assert_eq!(third_item.0, 2);
+/// assert_eq!(third_item.1, 8);
+/// ```
 pub type PriorityQueue<T, P> = BasicQueue<BinaryHeap<PrioritizedItem<T, P>>, PrioritizedItem<T, P>>;

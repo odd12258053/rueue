@@ -23,4 +23,25 @@ impl<T> BasicArray<T> for VecDeque<T> {
     }
 }
 
-pub type FiFoQueue<T> = BasicQueue<VecDeque<T>, T>;
+/// Fifo (First in, First out) Queue.
+///
+/// # Example
+/// ```
+/// use rueue::{FifoQueue, Queue};
+///
+/// let mut queue = FifoQueue::new(None);
+///
+/// queue.put(1).unwrap();
+/// queue.put(2).unwrap();
+/// queue.put(3).unwrap();
+///
+/// let first_item = queue.get().unwrap();
+/// assert_eq!(first_item, 1);
+///
+/// let second_item = queue.get().unwrap();
+/// assert_eq!(second_item, 2);
+///
+/// let third_item = queue.get().unwrap();
+/// assert_eq!(third_item, 3);
+/// ```
+pub type FifoQueue<T> = BasicQueue<VecDeque<T>, T>;
